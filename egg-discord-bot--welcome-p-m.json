@@ -4,7 +4,7 @@
         "version": "PTDL_v2",
         "update_url": null
     },
-    "exported_at": "2024-05-29T17:24:38+08:00",
+    "exported_at": "2024-05-29T20:12:12+08:00",
     "name": "DiscordBot-WelcomePM",
     "author": "admin@magnificathosting.com",
     "description": "DiscordBot's Bot",
@@ -22,7 +22,7 @@
     },
     "scripts": {
         "installation": {
-            "script": "#!\/bin\/ash\r\n# Server Files: \/mnt\/server\r\napk add --no-cache git\r\n\r\nmkdir -p \/mnt\/server\r\ncd \/mnt\/server\r\nif [[ -d .git\/ ]]; then\r\ngit pull https:\/\/github.com\/gamingmagic\/Discord-WelcomePM.git\r\nelse\r\ngit clone https:\/\/github.com\/gamingmagic\/Discord-WelcomePM.git .\r\nfi\r\nnpm install discord.js --production\r\nnpm install axios\r\n\r\necho -e \"Install Complete\"",
+            "script": "#!\/bin\/ash\r\n# Server Files: \/mnt\/server\r\napk add --no-cache git\r\n\r\nmkdir -p \/mnt\/server\r\ncd \/mnt\/server\r\nif [[ -d .git\/ ]]; then\r\ngit pull https:\/\/github.com\/gamingmagic\/Discord-WelcomePM.git\r\nelse\r\ngit clone https:\/\/github.com\/gamingmagic\/Discord-WelcomePM.git .\r\nfi\r\nnpm install discord.js@latest --production\r\nnpm install axios\r\n\r\necho -e \"Install Complete\"",
             "container": "node:10-alpine",
             "entrypoint": "ash"
         }
