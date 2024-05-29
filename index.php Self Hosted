@@ -1,8 +1,4 @@
-#npm install discord.js@latest --production
-#npm install axios
-#npm run start
-
-const { Discord, Client, GatewayIntentBits } = require('discord.js');
+const { Client, GatewayIntentBits } = require('discord.js');
 const axios = require('axios');
 const net = require('net');
 
@@ -70,6 +66,26 @@ const autoreply3 = "?tcg";
 const message3 = "There are several ways to earn TCG. Click this [link!](https://elvesorigin.com/board/index.php?app=forums&module=forums&controller=topic&id=282) for more info";
 const image3 = "https://elvesorigin.com/board/uploads/monthly_2024_01/image.png.dbb2b542ae6c5760745377986782b369.png";
 
+const downloadMessage = `Here are the download links:\n
+- [Google Drive](https://drive.google.com/file/d/1tDBlyizM9AvdDI-K899WfThWB0MIhbKk/view)
+- [Mega Download](https://mega.nz/file/ug0BiayL#NO0hOdidWT7GPRS_mVsXenDjGSHf3zrnDDgmUFgQKAc)
+- [MediaFire](https://www.mediafire.com/file/8kz37cahu51fby1/2024-05-01_ElvesRO_DirectX9_(NEW).rar/file)`;
+
+const welcomeMessagePart1 = `Welcome to the server, {{username}}! Here are some commands you can use:
+**?quest**: Type @warper in the game and look for ~Quest! or click this [link](https://elvesorigin.com/board/index.php?app=forums&module=forums&controller=forums&id=5) for more info.
+**?warper**: Type @warper in-game.
+**?grf**: Custom GRF Installation guide. [Download GRFs here](https://discord.com/channels/1064369380550516777/1069392648613400617).
+**?professor**: Hold F1 for Fire Bolt, F2 for Cold Bolt, F3 for Lightning Bolt. [Download AHK Bolt Combo here](https://cdn.discordapp.com/attachments/1069392648613400617/1195354273911939102/Fire_Cold_Light_bolt_AHK.exe?ex=65b3af6b&is=65a13a6b&hm=8b2e74255796f019a8016a7c25315185379f689133eed402efcb06192c33e419&)`;
+
+const welcomeMessagePart2 = `**?champion**: Hold F1 Skill Holder: F2 = Asura F3 = Berry F4 = Soul F5 = Fury download the [Asura Strike Spam](https://discord.com/channels/1064369380550516777/1069392648613400617/1195389696503722076)
+**?Bloody Branch**: There are several ways to earn Bloody branches on the game, like collecting, click this [link!](https://elvesorigin.com/board/index.php?app=forums&module=forums&controller=topic&id=280) for more info
+**?zeny**: Now that you are at max level and have decent stats, it's time for you to farm gold and collect zeny to buy stats and other essentials that you need on your adventure. Click this [link](https://elvesorigin.com/board/index.php?app=forums&module=forums&controller=topic&id=275) for more info
+**?tcg**: There are several ways to earn TCG. Click this [link](https://elvesorigin.com/board/index.php?app=forums&module=forums&controller=topic&id=282)
+  
+Other download:
+[4rtools](https://cdn.discordapp.com/attachments/1069392648613400617/1184282763273183312/4RTools.zip?ex=65b05245&is=659ddd45&hm=9717f0bf257cfe6be219dfff7b4b29a45cb25e3e12b9063e2c0251602460251d&)
+[more downloads](https://discord.com/channels/1064369380550516777/1069392648613400617)`;
+
 const autoreplyCommands = {
   [autoreply1]: {
     message: message1,
@@ -95,6 +111,27 @@ bot.on('messageCreate', async (message) => {
     await message.channel.send(reply.message);
     await message.channel.send({ files: [reply.image] });
   }
+
+  // Check if the message contains the word 'download'
+  if (message.content.toLowerCase().includes('download')) {
+    message.reply(downloadMessage);
+  }
 });
 
+bot.on('guildMemberAdd', async (member) => {
+  try {
+    const personalizedMessagePart1 = welcomeMessagePart1.replace('{{username}}', member.user.username);
+    await member.send(personalizedMessagePart1);
+    await member.send(welcomeMessagePart2);
+    console.log('Welcome messages sent successfully');
+  } catch (error) {
+    console.error('Error sending welcome messages:', error);
+  }
+});
+
+bot.on('ready', () => {
+  console.log('Bot is ready!', bot.user.username);
+});
+
+// Login to Discord with the bot token
 bot.login(BOT_TOKEN);
