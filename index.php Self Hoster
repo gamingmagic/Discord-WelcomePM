@@ -1,0 +1,100 @@
+#npm install discord.js@latest --production
+#npm install axios
+#npm run start
+
+const { Discord, Client, GatewayIntentBits } = require('discord.js');
+const axios = require('axios');
+const net = require('net');
+
+const BOT_TOKEN = 'your-bot-token-here'; // Replace with your actual bot token
+const PORT = 9999;
+const IP = '127.0.0.1';
+
+const bot = new Client({
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMembers,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.MessageContent,
+  ],
+});
+
+const sockets = []; // Define sockets array
+
+const connectSocket = () => {
+  const server = net.createServer(socket => {
+    // Handle socket connection
+    console.log('Socket connected.');
+
+    // Push the socket to the array
+    sockets.push(socket);
+
+    // Handle errors and events related to the socket connection
+    socket.on('error', (error) => {
+      console.error('Socket error:', error);
+    });
+
+    socket.on('close', () => {
+      console.log('Socket connection closed.');
+    });
+  });
+
+  // Start the server and listen on the specified port and IP
+  server.listen(PORT, IP, () => {
+    console.log(`Server is running on ${IP}:${PORT}`);
+
+    // Handle errors and events related to the server
+    server.on('error', (error) => {
+      console.error('Server error:', error);
+    });
+
+    server.on('close', () => {
+      console.log('Server closed.');
+    });
+  });
+};
+
+// Call connectSocket function to initialize sockets array
+connectSocket();
+
+// Define constants for autoreply messages
+const autoreply1 = "?quest";
+const message1 = "Type @warper in the game and look for ~Quest! or simply click this [link!](https://elvesorigin.com/board/index.php?app=forums&module=forums&controller=forums&id=5) for more info.";
+const image1 = "https://patcher.elvesro.com/discord/quest.png";
+
+const autoreply2 = "?zeny";
+const message2 = "Now that you are at max level and have decent stats, it's time for you to farm gold and collect zeny to buy stats and other essentials that you need on your adventure. Click this [link!](https://elvesorigin.com/board/index.php?app=forums&module=forums&controller=topic&id=275) for more info.";
+const image2 = "https://elvesorigin.com/board/uploads/monthly_2024_01/image.thumb.png.cfd7a3e575f3c4b74f892912d593d8d7.png";
+
+const autoreply3 = "?tcg";
+const message3 = "There are several ways to earn TCG. Click this [link!](https://elvesorigin.com/board/index.php?app=forums&module=forums&controller=topic&id=282) for more info";
+const image3 = "https://elvesorigin.com/board/uploads/monthly_2024_01/image.png.dbb2b542ae6c5760745377986782b369.png";
+
+const autoreplyCommands = {
+  [autoreply1]: {
+    message: message1,
+    image: image1,
+  },
+  [autoreply2]: {
+    message: message2,
+    image: image2,
+  },
+  [autoreply3]: {
+    message: message3,
+    image: image3,
+  },
+};
+
+bot.on('messageCreate', async (message) => {
+  if (message.author.bot) return;
+
+  const command = message.content.trim().toLowerCase();
+  
+  if (autoreplyCommands[command]) {
+    const reply = autoreplyCommands[command];
+    await message.channel.send(reply.message);
+    await message.channel.send({ files: [reply.image] });
+  }
+});
+
+bot.login(BOT_TOKEN);
