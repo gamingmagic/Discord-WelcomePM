@@ -1,0 +1,42 @@
+{
+    "_comment": "DO NOT EDIT: FILE GENERATED AUTOMATICALLY BY PTERODACTYL PANEL - PTERODACTYL.IO",
+    "meta": {
+        "version": "PTDL_v2",
+        "update_url": null
+    },
+    "exported_at": "2024-05-29T17:24:38+08:00",
+    "name": "DiscordBot-WelcomePM",
+    "author": "admin@magnificathosting.com",
+    "description": "DiscordBot's Bot",
+    "features": null,
+    "docker_images": {
+        "Node 21": "ghcr.io\/software-noob\/pterodactyl-images:nodejs_21"
+    },
+    "file_denylist": [],
+    "startup": "PORT={{SERVER_PORT}} &&\r\nexport PORT &&\r\nnpm run start",
+    "config": {
+        "files": "{}",
+        "startup": "{\r\n    \"done\": \"Bot is ready!\"\r\n}",
+        "logs": "{}",
+        "stop": "^C"
+    },
+    "scripts": {
+        "installation": {
+            "script": "#!\/bin\/ash\r\n# Server Files: \/mnt\/server\r\napk add --no-cache git\r\n\r\nmkdir -p \/mnt\/server\r\ncd \/mnt\/server\r\nif [[ -d .git\/ ]]; then\r\ngit pull https:\/\/github.com\/gamingmagic\/Discord-WelcomePM.git\r\nelse\r\ngit clone https:\/\/github.com\/gamingmagic\/Discord-WelcomePM.git .\r\nfi\r\nnpm install discord.js --production\r\nnpm install axios\r\n\r\necho -e \"Install Complete\"",
+            "container": "node:10-alpine",
+            "entrypoint": "ash"
+        }
+    },
+    "variables": [
+        {
+            "name": "Bot Token",
+            "description": "",
+            "env_variable": "BOT_TOKEN",
+            "default_value": "",
+            "user_viewable": true,
+            "user_editable": true,
+            "rules": "required|string",
+            "field_type": "text"
+        }
+    ]
+}
